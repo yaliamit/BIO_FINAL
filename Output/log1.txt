@@ -1,0 +1,331 @@
+ARGS:Namespace(SA=0, affine_coef=0.1, batch_size=32, bdy=5, cont=0, cuda='cuda:1', data_path='./data', dice_steps=100, direct_test=0, epochs=400, extra_dir=0, flip=0, ga=1.0, kernel_size=5, leak_thresh=0.1, log=1, lr=1e-05, lr_step=100, margin=0, model_name=None, model_name_o=None, model_path='./saved_models', mrg=25, n_layers=4, n_selected=20, n_window=200, out_margin=0, padding=2, perm=0, plot=0, reduced=0, result_path='./images/fig4', save=1, seed=0, split=100, train=True, traintest=0, trans_type='mix', wd=1e-08, weights=1, window_size=200, x_prefix='actin', y_prefix='junction', zero_weight=0.2)
+epoch: 1, time elapsed: 63 seconds 
+epoch 1, train loss: 0.8734, validation loss:  0.8387,learning rate: 0.0000100 
+epoch: 11, time elapsed: 60 seconds 
+epoch 11, train loss: 0.7874, validation loss:  0.7903,learning rate: 0.0000100 
+epoch: 21, time elapsed: 60 seconds 
+epoch 21, train loss: 0.7860, validation loss:  0.7826,learning rate: 0.0000100 
+epoch: 31, time elapsed: 60 seconds 
+epoch 31, train loss: 0.7503, validation loss:  0.7398,learning rate: 0.0000100 
+epoch: 41, time elapsed: 60 seconds 
+epoch 41, train loss: 0.7581, validation loss:  0.7339,learning rate: 0.0000100 
+epoch: 51, time elapsed: 60 seconds 
+epoch 51, train loss: 0.7545, validation loss:  0.7220,learning rate: 0.0000100 
+epoch: 61, time elapsed: 60 seconds 
+epoch 61, train loss: 0.7469, validation loss:  0.7108,learning rate: 0.0000100 
+epoch: 71, time elapsed: 60 seconds 
+epoch 71, train loss: 0.7428, validation loss:  0.7066,learning rate: 0.0000100 
+epoch: 81, time elapsed: 59 seconds 
+epoch 81, train loss: 0.7453, validation loss:  0.6907,learning rate: 0.0000100 
+epoch: 91, time elapsed: 60 seconds 
+epoch 91, train loss: 0.7376, validation loss:  0.7036,learning rate: 0.0000100 
+epoch: 101, time elapsed: 60 seconds 
+epoch 101, train loss: 0.0374, validation loss:  0.0341,learning rate: 0.0000100 
+epoch: 111, time elapsed: 60 seconds 
+epoch 111, train loss: 0.0316, validation loss:  0.0332,learning rate: 0.0000100 
+epoch: 121, time elapsed: 60 seconds 
+epoch 121, train loss: 0.0335, validation loss:  0.0326,learning rate: 0.0000100 
+epoch: 131, time elapsed: 60 seconds 
+epoch 131, train loss: 0.0322, validation loss:  0.0323,learning rate: 0.0000100 
+epoch: 141, time elapsed: 59 seconds 
+epoch 141, train loss: 0.0330, validation loss:  0.0315,learning rate: 0.0000100 
+epoch: 151, time elapsed: 59 seconds 
+epoch 151, train loss: 0.0351, validation loss:  0.0324,learning rate: 0.0000100 
+epoch: 161, time elapsed: 60 seconds 
+epoch 161, train loss: 0.0357, validation loss:  0.0319,learning rate: 0.0000100 
+epoch: 171, time elapsed: 60 seconds 
+epoch 171, train loss: 0.0365, validation loss:  0.0338,learning rate: 0.0000100 
+epoch: 181, time elapsed: 60 seconds 
+epoch 181, train loss: 0.0380, validation loss:  0.0325,learning rate: 0.0000100 
+epoch: 191, time elapsed: 60 seconds 
+epoch 191, train loss: 0.0351, validation loss:  0.0321,learning rate: 0.0000100 
+epoch: 201, time elapsed: 59 seconds 
+epoch 201, train loss: 0.0312, validation loss:  0.0329,learning rate: 0.0000100 
+epoch: 211, time elapsed: 60 seconds 
+epoch 211, train loss: 0.0379, validation loss:  0.0320,learning rate: 0.0000100 
+epoch: 221, time elapsed: 60 seconds 
+epoch 221, train loss: 0.0351, validation loss:  0.0314,learning rate: 0.0000100 
+epoch: 231, time elapsed: 60 seconds 
+epoch 231, train loss: 0.0321, validation loss:  0.0326,learning rate: 0.0000100 
+epoch: 241, time elapsed: 60 seconds 
+epoch 241, train loss: 0.0304, validation loss:  0.0314,learning rate: 0.0000100 
+epoch: 251, time elapsed: 60 seconds 
+epoch 251, train loss: 0.0324, validation loss:  0.0317,learning rate: 0.0000100 
+epoch: 261, time elapsed: 60 seconds 
+epoch 261, train loss: 0.0318, validation loss:  0.0315,learning rate: 0.0000100 
+epoch: 271, time elapsed: 59 seconds 
+epoch 271, train loss: 0.0337, validation loss:  0.0327,learning rate: 0.0000100 
+epoch: 281, time elapsed: 60 seconds 
+epoch 281, train loss: 0.0336, validation loss:  0.0329,learning rate: 0.0000100 
+epoch: 291, time elapsed: 59 seconds 
+epoch 291, train loss: 0.0299, validation loss:  0.0312,learning rate: 0.0000100 
+epoch: 301, time elapsed: 60 seconds 
+epoch 301, train loss: 0.0294, validation loss:  0.0306,learning rate: 0.0000100 
+epoch: 311, time elapsed: 60 seconds 
+epoch 311, train loss: 0.0293, validation loss:  0.0320,learning rate: 0.0000100 
+epoch: 321, time elapsed: 60 seconds 
+epoch 321, train loss: 0.0295, validation loss:  0.0318,learning rate: 0.0000100 
+epoch: 331, time elapsed: 60 seconds 
+epoch 331, train loss: 0.0334, validation loss:  0.0316,learning rate: 0.0000100 
+epoch: 341, time elapsed: 60 seconds 
+epoch 341, train loss: 0.0284, validation loss:  0.0309,learning rate: 0.0000100 
+epoch: 351, time elapsed: 60 seconds 
+epoch 351, train loss: 0.0303, validation loss:  0.0307,learning rate: 0.0000100 
+epoch: 361, time elapsed: 60 seconds 
+epoch 361, train loss: 0.0311, validation loss:  0.0312,learning rate: 0.0000100 
+epoch: 371, time elapsed: 59 seconds 
+epoch 371, train loss: 0.0327, validation loss:  0.0308,learning rate: 0.0000100 
+epoch: 381, time elapsed: 60 seconds 
+epoch 381, train loss: 0.0316, validation loss:  0.0307,learning rate: 0.0000100 
+epoch: 391, time elapsed: 59 seconds 
+epoch 391, train loss: 0.0294, validation loss:  0.0299,learning rate: 0.0000100 
+actin_junction_mix_0.1_kernel_5_nlayers_4_ds_100_lrstep_100_ws_200_fl_0_1
+ARGS:Namespace(SA=0, affine_coef=0.0, batch_size=32, bdy=10, cont=0, cuda='cuda:1', data_path='./data/pred/actin_junction_mix_0.1_kernel_5_nlayers_4_ds_100_lrstep_100_ws_200_fl_0_1', dice_steps=0, direct_test=0, epochs=400, extra_dir=0, flip=0, ga=1.0, kernel_size=5, leak_thresh=0.1, log=1, lr=1e-05, lr_step=100, margin=0, model_name=None, model_name_o=None, model_path='./saved_models', mrg=40, n_layers=4, n_selected=20, n_window=200, out_margin=0, padding=2, perm=0, plot=0, reduced=0, result_path='./images/fig4', save=1, seed=0, split=100, train=True, traintest=0, trans_type='mix', wd=1e-08, weights=1, window_size=200, x_prefix='pred_junction', y_prefix='outline', zero_weight=0.2)
+epoch: 1, time elapsed: 52 seconds 
+epoch 1, train loss: 1.4386, validation loss:  1.3037,learning rate: 0.0000100 
+ train acc: 0.5323, valid acc: 0.4229 
+epoch: 11, time elapsed: 47 seconds 
+epoch 11, train loss: 1.2372, validation loss:  1.1596,learning rate: 0.0000100 
+ train acc: 0.5811, valid acc: 0.5494 
+epoch: 21, time elapsed: 44 seconds 
+epoch 21, train loss: 1.1793, validation loss:  1.0918,learning rate: 0.0000100 
+ train acc: 0.6028, valid acc: 0.5632 
+epoch: 31, time elapsed: 46 seconds 
+epoch 31, train loss: 1.1803, validation loss:  1.1093,learning rate: 0.0000100 
+ train acc: 0.5968, valid acc: 0.5819 
+epoch: 41, time elapsed: 46 seconds 
+epoch 41, train loss: 1.1818, validation loss:  1.1034,learning rate: 0.0000100 
+ train acc: 0.5962, valid acc: 0.5648 
+epoch: 51, time elapsed: 46 seconds 
+epoch 51, train loss: 1.1287, validation loss:  1.1716,learning rate: 0.0000100 
+ train acc: 0.6181, valid acc: 0.5638 
+epoch: 61, time elapsed: 49 seconds 
+epoch 61, train loss: 1.1429, validation loss:  1.0946,learning rate: 0.0000100 
+ train acc: 0.6105, valid acc: 0.5895 
+epoch: 71, time elapsed: 45 seconds 
+epoch 71, train loss: 1.1397, validation loss:  1.0216,learning rate: 0.0000100 
+ train acc: 0.6080, valid acc: 0.5870 
+epoch: 81, time elapsed: 44 seconds 
+epoch 81, train loss: 1.1312, validation loss:  1.0060,learning rate: 0.0000100 
+ train acc: 0.6066, valid acc: 0.5945 
+epoch: 91, time elapsed: 47 seconds 
+epoch 91, train loss: 1.1415, validation loss:  1.0437,learning rate: 0.0000100 
+ train acc: 0.6181, valid acc: 0.5856 
+epoch: 101, time elapsed: 46 seconds 
+epoch 101, train loss: 1.0917, validation loss:  1.1293,learning rate: 0.0000100 
+ train acc: 0.6163, valid acc: 0.5853 
+epoch: 111, time elapsed: 46 seconds 
+epoch 111, train loss: 1.0980, validation loss:  1.0602,learning rate: 0.0000100 
+ train acc: 0.6214, valid acc: 0.5859 
+epoch: 121, time elapsed: 50 seconds 
+epoch 121, train loss: 1.1271, validation loss:  1.0257,learning rate: 0.0000100 
+ train acc: 0.6068, valid acc: 0.5954 
+epoch: 131, time elapsed: 49 seconds 
+epoch 131, train loss: 1.1176, validation loss:  1.0549,learning rate: 0.0000100 
+ train acc: 0.6078, valid acc: 0.5699 
+epoch: 141, time elapsed: 50 seconds 
+epoch 141, train loss: 1.0883, validation loss:  1.0184,learning rate: 0.0000100 
+ train acc: 0.6148, valid acc: 0.5846 
+epoch: 151, time elapsed: 48 seconds 
+epoch 151, train loss: 1.1260, validation loss:  0.9772,learning rate: 0.0000100 
+ train acc: 0.6066, valid acc: 0.5948 
+epoch: 161, time elapsed: 46 seconds 
+epoch 161, train loss: 1.0910, validation loss:  0.9865,learning rate: 0.0000100 
+ train acc: 0.6089, valid acc: 0.5991 
+epoch: 171, time elapsed: 48 seconds 
+epoch 171, train loss: 1.1507, validation loss:  1.0065,learning rate: 0.0000100 
+ train acc: 0.6022, valid acc: 0.5689 
+epoch: 181, time elapsed: 42 seconds 
+epoch 181, train loss: 1.0813, validation loss:  1.0751,learning rate: 0.0000100 
+ train acc: 0.6238, valid acc: 0.5897 
+epoch: 191, time elapsed: 45 seconds 
+epoch 191, train loss: 1.1021, validation loss:  1.0634,learning rate: 0.0000100 
+ train acc: 0.6105, valid acc: 0.5907 
+epoch: 201, time elapsed: 49 seconds 
+epoch 201, train loss: 1.0656, validation loss:  1.0261,learning rate: 0.0000100 
+ train acc: 0.6255, valid acc: 0.5816 
+epoch: 211, time elapsed: 47 seconds 
+epoch 211, train loss: 1.0606, validation loss:  1.0002,learning rate: 0.0000100 
+ train acc: 0.6136, valid acc: 0.5899 
+epoch: 221, time elapsed: 47 seconds 
+epoch 221, train loss: 1.0743, validation loss:  0.9867,learning rate: 0.0000100 
+ train acc: 0.6183, valid acc: 0.5900 
+epoch: 231, time elapsed: 45 seconds 
+epoch 231, train loss: 1.1003, validation loss:  1.0062,learning rate: 0.0000100 
+ train acc: 0.6045, valid acc: 0.5896 
+epoch: 241, time elapsed: 48 seconds 
+epoch 241, train loss: 1.0869, validation loss:  0.9835,learning rate: 0.0000100 
+ train acc: 0.6143, valid acc: 0.5912 
+epoch: 251, time elapsed: 47 seconds 
+epoch 251, train loss: 1.0754, validation loss:  0.9789,learning rate: 0.0000100 
+ train acc: 0.6176, valid acc: 0.5991 
+epoch: 261, time elapsed: 47 seconds 
+epoch 261, train loss: 1.0842, validation loss:  1.0417,learning rate: 0.0000100 
+ train acc: 0.6228, valid acc: 0.5884 
+epoch: 271, time elapsed: 48 seconds 
+epoch 271, train loss: 1.0908, validation loss:  1.0177,learning rate: 0.0000100 
+ train acc: 0.6145, valid acc: 0.5855 
+epoch: 281, time elapsed: 46 seconds 
+epoch 281, train loss: 1.1019, validation loss:  1.0283,learning rate: 0.0000100 
+ train acc: 0.6088, valid acc: 0.5558 
+epoch: 291, time elapsed: 45 seconds 
+epoch 291, train loss: 1.0962, validation loss:  0.9979,learning rate: 0.0000100 
+ train acc: 0.6132, valid acc: 0.5874 
+epoch: 301, time elapsed: 46 seconds 
+epoch 301, train loss: 1.0749, validation loss:  1.0037,learning rate: 0.0000100 
+ train acc: 0.6137, valid acc: 0.5901 
+epoch: 311, time elapsed: 50 seconds 
+epoch 311, train loss: 1.0966, validation loss:  1.0292,learning rate: 0.0000100 
+ train acc: 0.6069, valid acc: 0.5875 
+epoch: 321, time elapsed: 52 seconds 
+epoch 321, train loss: 1.0593, validation loss:  1.0002,learning rate: 0.0000100 
+ train acc: 0.6276, valid acc: 0.5884 
+epoch: 331, time elapsed: 48 seconds 
+epoch 331, train loss: 1.0700, validation loss:  1.0435,learning rate: 0.0000100 
+ train acc: 0.6194, valid acc: 0.5828 
+epoch: 341, time elapsed: 50 seconds 
+epoch 341, train loss: 1.0515, validation loss:  0.9939,learning rate: 0.0000100 
+ train acc: 0.6251, valid acc: 0.5999 
+epoch: 351, time elapsed: 44 seconds 
+epoch 351, train loss: 1.0772, validation loss:  1.0193,learning rate: 0.0000100 
+ train acc: 0.6247, valid acc: 0.5388 
+epoch: 361, time elapsed: 48 seconds 
+epoch 361, train loss: 1.0687, validation loss:  1.0287,learning rate: 0.0000100 
+ train acc: 0.6190, valid acc: 0.5921 
+epoch: 371, time elapsed: 45 seconds 
+epoch 371, train loss: 1.0642, validation loss:  1.0328,learning rate: 0.0000100 
+ train acc: 0.6222, valid acc: 0.5966 
+epoch: 381, time elapsed: 47 seconds 
+epoch 381, train loss: 1.0878, validation loss:  1.0258,learning rate: 0.0000100 
+ train acc: 0.6181, valid acc: 0.5960 
+epoch: 391, time elapsed: 43 seconds 
+epoch 391, train loss: 1.0891, validation loss:  0.9906,learning rate: 0.0000100 
+ train acc: 0.6094, valid acc: 0.5912 
+pred_junction_outline_mix_0.0_kernel_5_nlayers_4_ds_0_lrstep_100_ws_200_fl_0_bdy_10_mrg_40_1
+Testing:test
+Tested Model: pred_junction_outline_mix_0.0_kernel_5_nlayers_4_ds_0_lrstep_100_ws_200_fl_0_bdy_10_mrg_40_1_50
+[[0.3800026  0.31078735 0.23850745 0.0707026 ]
+ [0.13645564 0.4049461  0.33904295 0.11955532]
+ [0.0290929  0.06082435 0.77750004 0.13258272]
+ [0.04670973 0.05583    0.05299373 0.84446653]]
+0.5499950669560719
+Reduced:
+[[0.61481067 0.2896401  0.09554923]
+ [0.08991725 0.77750004 0.13258272]
+ [0.10253974 0.05299373 0.84446653]]
+Reduced acc:0.6839780955072858
+class probs[0.29640894 0.30678745 0.32793787 0.06886574]
+Testing:test
+Tested Model: pred_junction_outline_mix_0.0_kernel_5_nlayers_4_ds_0_lrstep_100_ws_200_fl_0_bdy_10_mrg_40_1_100
+[[0.47801234 0.24387809 0.20217052 0.07593905]
+ [0.20132447 0.3548387  0.31183932 0.13199751]
+ [0.0296614  0.07000509 0.76518169 0.13515182]
+ [0.06394032 0.0354195  0.05641888 0.8442213 ]]
+0.559617169126078
+Reduced:
+[[0.63760106 0.25794839 0.10445055]
+ [0.09966649 0.76518169 0.13515182]
+ [0.09935982 0.05641888 0.8442213 ]]
+Reduced acc:0.6936686381065644
+class probs[0.29640894 0.30678745 0.32793787 0.06886574]
+Testing:test
+Tested Model: pred_junction_outline_mix_0.0_kernel_5_nlayers_4_ds_0_lrstep_100_ws_200_fl_0_bdy_10_mrg_40_1_150
+[[0.50612425 0.25330895 0.16939528 0.07117151]
+ [0.19222931 0.43883149 0.24344309 0.12549611]
+ [0.03532948 0.1257844  0.71521954 0.12366658]
+ [0.04990417 0.05636886 0.0477326  0.84599437]]
+0.5774553448419915
+Reduced:
+[[0.69414262 0.20705622 0.09880116]
+ [0.16111389 0.71521954 0.12366658]
+ [0.10627303 0.0477326  0.84599437]]
+Reduced acc:0.7115119246337548
+class probs[0.29640894 0.30678745 0.32793787 0.06886574]
+Testing:test
+Tested Model: pred_junction_outline_mix_0.0_kernel_5_nlayers_4_ds_0_lrstep_100_ws_200_fl_0_bdy_10_mrg_40_1
+[[0.67180903 0.1715146  0.09464934 0.06202703]
+ [0.32050206 0.39651078 0.14726741 0.13571974]
+ [0.08724244 0.16140559 0.6088313  0.14252067]
+ [0.07153113 0.0341014  0.02341295 0.87095452]]
+0.5804125046886138
+Reduced:
+[[0.7790816  0.12141104 0.09950736]
+ [0.24864803 0.6088313  0.14252067]
+ [0.10563253 0.02341295 0.87095452]]
+Reduced acc:0.7295769759285233
+class probs[0.29640894 0.30678745 0.32793787 0.06886574]
+ARGS:Namespace(SA=0, affine_coef=0.0, batch_size=32, bdy=10, cont=0, cuda='cuda:1', data_path='./data', dice_steps=0, direct_test=0, epochs=200, extra_dir=0, flip=0, ga=1.0, kernel_size=5, leak_thresh=0.1, log=1, lr=1e-05, lr_step=100, margin=0, model_name=None, model_name_o=None, model_path='./saved_models', mrg=40, n_layers=4, n_selected=20, n_window=200, out_margin=0, padding=2, perm=0, plot=0, reduced=0, result_path='./images/fig4', save=1, seed=0, split=100, train=True, traintest=0, trans_type='mix', wd=1e-08, weights=1, window_size=200, x_prefix='junction', y_prefix='outline', zero_weight=0.2)
+epoch: 1, time elapsed: 52 seconds 
+epoch 1, train loss: 1.4100, validation loss:  1.2138,learning rate: 0.0000100 
+ train acc: 0.5517, valid acc: 0.4651 
+epoch: 11, time elapsed: 48 seconds 
+epoch 11, train loss: 1.1291, validation loss:  0.9512,learning rate: 0.0000100 
+ train acc: 0.6081, valid acc: 0.6187 
+epoch: 21, time elapsed: 44 seconds 
+epoch 21, train loss: 1.0622, validation loss:  0.9791,learning rate: 0.0000100 
+ train acc: 0.6452, valid acc: 0.5787 
+epoch: 31, time elapsed: 46 seconds 
+epoch 31, train loss: 1.0448, validation loss:  0.9247,learning rate: 0.0000100 
+ train acc: 0.6477, valid acc: 0.6559 
+epoch: 41, time elapsed: 46 seconds 
+epoch 41, train loss: 1.0405, validation loss:  0.9364,learning rate: 0.0000100 
+ train acc: 0.6525, valid acc: 0.6241 
+epoch: 51, time elapsed: 46 seconds 
+epoch 51, train loss: 0.9937, validation loss:  0.9631,learning rate: 0.0000100 
+ train acc: 0.6703, valid acc: 0.6211 
+epoch: 61, time elapsed: 49 seconds 
+epoch 61, train loss: 1.0094, validation loss:  0.9069,learning rate: 0.0000100 
+ train acc: 0.6669, valid acc: 0.6721 
+epoch: 71, time elapsed: 45 seconds 
+epoch 71, train loss: 0.9841, validation loss:  0.8546,learning rate: 0.0000100 
+ train acc: 0.6707, valid acc: 0.6709 
+epoch: 81, time elapsed: 45 seconds 
+epoch 81, train loss: 0.9813, validation loss:  0.8456,learning rate: 0.0000100 
+ train acc: 0.6691, valid acc: 0.6702 
+epoch: 91, time elapsed: 48 seconds 
+epoch 91, train loss: 1.0041, validation loss:  0.8117,learning rate: 0.0000100 
+ train acc: 0.6723, valid acc: 0.6735 
+epoch: 101, time elapsed: 47 seconds 
+epoch 101, train loss: 0.9602, validation loss:  0.8275,learning rate: 0.0000100 
+ train acc: 0.6740, valid acc: 0.6791 
+epoch: 111, time elapsed: 45 seconds 
+epoch 111, train loss: 0.9500, validation loss:  0.8850,learning rate: 0.0000100 
+ train acc: 0.6834, valid acc: 0.6804 
+epoch: 121, time elapsed: 49 seconds 
+epoch 121, train loss: 0.9563, validation loss:  0.8018,learning rate: 0.0000100 
+ train acc: 0.6766, valid acc: 0.6742 
+epoch: 131, time elapsed: 49 seconds 
+epoch 131, train loss: 0.9629, validation loss:  0.8933,learning rate: 0.0000100 
+ train acc: 0.6721, valid acc: 0.6757 
+epoch: 141, time elapsed: 51 seconds 
+epoch 141, train loss: 0.9404, validation loss:  0.8460,learning rate: 0.0000100 
+ train acc: 0.6827, valid acc: 0.6581 
+epoch: 151, time elapsed: 48 seconds 
+epoch 151, train loss: 0.9705, validation loss:  0.7980,learning rate: 0.0000100 
+ train acc: 0.6744, valid acc: 0.7006 
+epoch: 161, time elapsed: 47 seconds 
+epoch 161, train loss: 0.9301, validation loss:  0.8810,learning rate: 0.0000100 
+ train acc: 0.6802, valid acc: 0.6922 
+epoch: 171, time elapsed: 48 seconds 
+epoch 171, train loss: 0.9810, validation loss:  0.8445,learning rate: 0.0000100 
+ train acc: 0.6699, valid acc: 0.6528 
+epoch: 181, time elapsed: 42 seconds 
+epoch 181, train loss: 0.9198, validation loss:  0.9221,learning rate: 0.0000100 
+ train acc: 0.6834, valid acc: 0.6722 
+epoch: 191, time elapsed: 45 seconds 
+epoch 191, train loss: 0.9491, validation loss:  0.7766,learning rate: 0.0000100 
+ train acc: 0.6815, valid acc: 0.6928 
+junction_outline_mix_0.0_kernel_5_nlayers_4_ds_0_lrstep_100_ws_200_fl_0_bdy_10_mrg_40_1
+Testing:test
+Tested Model: junction_outline_mix_0.0_kernel_5_nlayers_4_ds_0_lrstep_100_ws_200_fl_0_bdy_10_mrg_40_1
+[[0.60966806 0.29306888 0.06643922 0.03082385]
+ [0.08216789 0.79750504 0.06965507 0.050672  ]
+ [0.06455959 0.23241623 0.60972505 0.09329912]
+ [0.01594475 0.01403454 0.05142878 0.91859193]]
+0.6885870473376673
+Reduced:
+[[0.89100652 0.06807481 0.04091867]
+ [0.29697582 0.60972505 0.09329912]
+ [0.02997928 0.05142878 0.91859193]]
+Reduced acc:0.8006633610828164
+class probs[0.29640894 0.30678745 0.32793787 0.06886574]
