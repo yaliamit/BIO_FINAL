@@ -1,8 +1,8 @@
 #!/bin/bash -x
 
-c=0
-r=0
-t=1
+c=0 # Which gpu to use
+r=0 # Reduced outline classes to 3 (=1) or all 4 (=0)
+t=1 # Train
 if [ "$#" -ge 1 ];
     then c=$1
 fi
@@ -21,6 +21,7 @@ else
 fi
 echo $name_outline
 
+# Run the model on test data and report classification rates.
 for i in '';
   do
    python3 CODE/main.py --test -x junction -y outline -a 0.0 --reduced=$r --model_name=$name_outline$i --data_path "./data" --cuda cuda:$c
