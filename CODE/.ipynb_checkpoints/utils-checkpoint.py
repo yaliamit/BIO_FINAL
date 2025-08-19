@@ -10,7 +10,6 @@ import copy
 from skimage import exposure
 import torch.nn.functional as F
 import matplotlib.pyplot as plt
-# import matplotlib as mpl
 from matplotlib.patches import Patch
 
 
@@ -43,14 +42,19 @@ def get_file_by_num(dir,i):
 
 
 colors=[[1,0,0],[1,1,0],[0,1,0],[0,0,1]]
-def color_image(imt):
-    llt=5
-    #print(np.unique(imt))
+def color_image(imt,reduce=False):
+    
     bimt=np.zeros((imt.shape[0],imt.shape[1],3))
-    for i in range(1,llt):
-        j=i-1
-        #print(i,j,colors[j])
-        bimt[imt==i]=colors[j]
+    if not reduce:
+        llt=5 
+        for i in range(1,llt):
+            j=i-1
+            bimt[imt==i]=colors[j]
+    else:
+        bimt[np.logical_or(imt==1,imt==2)]=colors[0]
+        bimt[imt==3]=colors[2]
+        bimt[imt==4]=colors[3]
+
     return bimt
 
 def dice_loss(input, target, epsilon=1e-6):
