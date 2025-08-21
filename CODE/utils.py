@@ -41,10 +41,10 @@ def get_file_by_num(dir,i):
     return(ff)
 
 
-colors=[[1,0,0],[1,1,0],[0,1,0],[0,0,1]]
+colors=[[1,0,0],[1,1,0],[0,1,0],[1,1,1]]
 def color_image(imt,reduce=False):
     
-    bimt=np.zeros((imt.shape[0],imt.shape[1],3))
+    bimt=np.ones((imt.shape[0],imt.shape[1],3))
     if not reduce:
         llt=5 
         for i in range(1,llt):
