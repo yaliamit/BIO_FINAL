@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-dd="./data_new"
+dd="./data"
 
 c=0 # Which gpu to use
 r=0 # Reduced outline classes to 3 (=1) or all 4 (=0)

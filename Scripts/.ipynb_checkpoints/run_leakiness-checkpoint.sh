@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-dd="./data_new/permeability"
+dd="./data/permeability"
 
 c=0 # Gpu to run
 cn=0 # Continue training - with given model name.
