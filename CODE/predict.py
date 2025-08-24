@@ -8,23 +8,23 @@ from utils import load_model
 import numpy as np
 import matplotlib.pyplot as plt
 
-def predict_file(device,target,model_name,file_num,x_prefix,y_prefix, zero_thresh=0, im=None, pad_size=0,  name1=None):
+def predict_file(device,target,model_name,file_num,x_prefix,y_prefix, zero_thresh=0, im=None, pad_size=0,  name1=None, data_path='data/'):
     model = load_model('./saved_models/' + model_name + '.pkl').to(device)
     
     model.eval()
     #print(model_name)
     if im is None:
-        dirpath = './data/permeability/' + target
+        dirpath = data_path+'permeability/' + target
 
         if 'junc' == x_prefix and 'leakiness' in y_prefix:
-            dirpath = './data/leak_outline/'
+            dirpath = data_path+'leak_outline/'
         elif name1 is not None and 'junction' in x_prefix:
             if 'pred' in x_prefix:
-                dirpath = './data/pred/'+name1+'/'+target
+                dirpath = data_path+'pred/'+name1+'/'+target
         elif 'junction' in x_prefix and 'outline' in y_prefix:
-                dirpath = './data/permeability/'+target
+                dirpath = data_path+'permeability/'+target
         elif 'junc' == x_prefix and 'outline' in y_prefix:
-                dirpath = './data/leak_outline/'
+                dirpath = data_path+'leak_outline/'
 
         filename=x_prefix+str(file_num)+'.tif'
         filepath = os.path.join(dirpath, filename)
@@ -52,18 +52,18 @@ def predict_file(device,target,model_name,file_num,x_prefix,y_prefix, zero_thres
 
     return(img)
 
-def predict(device, name, name1, x_prefix='actin', y_prefix='junction', pad_size=0, zero_thresh=0, replace_pj = 0, rewrite=True):
+def predict(device, name, name1, x_prefix='actin', y_prefix='junction', pad_size=0, zero_thresh=0, replace_pj = 0, rewrite=True,datapath='data/'):
 #affine_coef=1,  trans_type='mix', kernel_size=5, rewrite=True, 
             #reduced=True, n_layers = 4, n_window = 200, window_size = 200, margin = 0):
     temp =  ''
     model = load_model('./saved_models/' + name + '.pkl').to(device)
     model.eval()
     for target in ['train', 'valid', 'test']:
-        dirpath = './data/' + target
+        dirpath = datapath+ target
         if name1 is not None and 'pred' in x_prefix:
-            dirpath = './data/pred/'+name1+'/'+target
+            dirpath = datapath+'pred/'+name1+'/'+target
         if 'leakiness' in y_prefix:
-            dirpath = './data/permeability/' + target
+            dirpath = datapath+'permeability/' + target
         
         filenames = os.listdir(dirpath)
         
@@ -101,9 +101,9 @@ def predict(device, name, name1, x_prefix='actin', y_prefix='junction', pad_size
                     img = Image.fromarray(img)
                     if replace_pj: 
                         if x_prefix.startswith("actin") and y_prefix.startswith('junction'): 
-                            img.save('./data/'+target+ pref+'/pred_'+ y_prefix + filename[len(x_prefix):]) 
+                            img.save(datapath+target+ pref+'/pred_'+ y_prefix + filename[len(x_prefix):]) 
                     elif rewrite: 
-                            newpath='./data/pred/'+name+'/'+target+'/'
+                            newpath=datapath+'pred/'+name+'/'+target+'/'
                             if not os.path.exists(newpath):
                                     os.makedirs(newpath)
                             img.save(newpath+pref +'pred_'+  y_prefix + temp + filename[len(x_prefix):])
@@ -121,8 +121,10 @@ if __name__ == '__main__':
     parser.add_argument('-m', '--pad_size', type = int, help ='padding', default = 0)
     parser.add_argument('-na', '--name', type=str, help='name of model to predict with',default=None)
     parser.add_argument('-naa', '--name1', type=str, help='name of model to predict with',default=None)
+    parser.add_argument('-dp', '--data_path', type=str, help='name of data path',default='data/')
+
 
     args = parser.parse_args()
     device = 'cuda:' + str(args.device)
-    predict(device, args.name, args.name1,  x_prefix=args.x_prefix, y_prefix=args.y_prefix, pad_size=args.pad_size, zero_thresh=args.zero_thresh, replace_pj = args.pred_junction_replace,rewrite=args.rewrite)
+    predict(device, args.name, args.name1,  x_prefix=args.x_prefix, y_prefix=args.y_prefix, pad_size=args.pad_size, zero_thresh=args.zero_thresh, replace_pj = args.pred_junction_replace,rewrite=args.rewrite,datapath=args.data_path)
      

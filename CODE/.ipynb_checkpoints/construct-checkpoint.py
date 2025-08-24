@@ -17,18 +17,18 @@ def is_spec(date):
             return True
     return False
 
-def construct_actin_outline(n_test=1, n_valid=1, seed=0, augment=0,save=False):
+def construct_actin_outline(n_test=1, n_valid=1, seed=0, augment=0,
+                            datapath='data/',datadir='/home/amit/ga/BIO/Junctions_Outlines_Annotated'):
     np.random.seed(seed)
-    #remove_data()
-    datadir = '/home/amit/ga/BIO/Junctions_Outlines_Annotated'
+
     dates = os.listdir(datadir) # 0227, 0307, 0906
     count, count_train, count_valid, count_test =  0, 0, 0, 0
     DFF=[]
     UFF=[]
-    if os.path.isdir('data/temp/'):
-        shutil.rmtree('data/temp/')
-    os.makedirs('data',exist_ok=True)
-    os.mkdir('data/temp/')
+    if os.path.isdir(datapath+'temp/'):
+        shutil.rmtree(datapath+'temp/')
+    os.makedirs(datapath,exist_ok=True)
+    os.mkdir(datapath+'temp/')
     if '.DS_Store' in dates:
         dates.remove('.DS_Store')
     for date in dates:
@@ -63,30 +63,30 @@ def construct_actin_outline(n_test=1, n_valid=1, seed=0, augment=0,save=False):
                     path = os.path.join(datadir, date, subdir, cells[selected[i]], file)
                     if file.startswith('outlineCenter'):
                         #print('out',file)
-                        if save:
-                            img = plt.imread(path).astype(np.uint8)
-                            if augment == 1:
-                                img = augment_background(img)
-                            
-                            img = Image.fromarray(img[:1509,:1053])
-                            
-                            if np.max(img) == 0:
-                                print('0 max',path)
-                                os.remove(path)
-                            
-                            img.save(os.path.join('data/temp/', split, pref+'outline'+str(count)+'.tif'))
+                    
+                        img = plt.imread(path).astype(np.uint8)
+                        if augment == 1:
+                            img = augment_background(img)
+                        
+                        img = Image.fromarray(img[:1509,:1053])
+                        
+                        if np.max(img) == 0:
+                            print('0 max',path)
+                            os.remove(path)
+                        
+                        img.save(os.path.join(datapath+'temp/', split, pref+'outline'+str(count)+'.tif'))
                             # if len(np.unique(img)) > 5:
                             #     print(np.unique(img), file)
                     elif (isspec and 'VECad' in file) or ((not isspec) and
                     ('1642' in file or '2491' in file or '2642' in file)):
                         #print('junc',file)
                         try:
-                           if save:
-                                img = stretch_image(plt.imread(path))
-                                img = ((img-img.min())/(img.max()-img.min())*255).astype(np.uint8)
-                                img = Image.fromarray(img[:1509,:1053])
-                           
-                                img.save(os.path.join('data/temp/', split, pref+'junction'+str(count)+'.tif'))
+
+                            img = stretch_image(plt.imread(path))
+                            img = ((img-img.min())/(img.max()-img.min())*255).astype(np.uint8)
+                            img = Image.fromarray(img[:1509,:1053])
+                       
+                            img.save(os.path.join(datapath+'temp/', split, pref+'junction'+str(count)+'.tif'))
                         except:
                             print('oops',path)
                             continue
@@ -95,28 +95,27 @@ def construct_actin_outline(n_test=1, n_valid=1, seed=0, augment=0,save=False):
                     ('3561' in file or '3491' in file or '1561' in file)):
                                    
                         try:
-                          if save:
                             print('Actin',file)
                             img = stretch_image(plt.imread(path))
                             img = ((img-img.min())/(img.max()-img.min())*255).astype(np.uint8)
                             img = Image.fromarray(img[:1509,:1053])
-                            img.save(os.path.join('data/temp/', split, pref+'actin'+str(count)+'.tif'))
+                            img.save(os.path.join(datapath+'temp/', split, pref+'actin'+str(count)+'.tif'))
                         except:
                             print('oops',path)
                             continue  
     print('count',count)
     return(DFF,UFF)
 
-def allocate_to_train_test_valid():
+def allocate_to_train_test_valid(datapath='data/'):
 
-    shutil.rmtree('data/train', ignore_errors=True)
-    shutil.rmtree('data/test', ignore_errors=True)
-    shutil.rmtree('data/valid', ignore_errors=True)
+    shutil.rmtree(datapath+'train', ignore_errors=True)
+    shutil.rmtree(datapath+'test', ignore_errors=True)
+    shutil.rmtree(datapath+'valid', ignore_errors=True)
 
-    os.makedirs('data/train/',exist_ok=True)
-    os.makedirs('data/test/',exist_ok=True)
-    os.makedirs('data/valid/',exist_ok=True)
-    aa=os.listdir('data/temp/')
+    os.makedirs(datapath+'train/',exist_ok=True)
+    os.makedirs(datapath+'test/',exist_ok=True)
+    os.makedirs(datapath+'valid/',exist_ok=True)
+    aa=os.listdir(datapath+'temp/')
     
     
     n_cell=237
@@ -151,15 +150,15 @@ def allocate_to_train_test_valid():
         if len(tt)==3:
             if j<128:
                 for t in tt:
-                    shutil.move('data/temp/'+t,'./data/train/'+t)
+                    shutil.move(datapath+'temp/'+t,datapath+'train/'+t)
                 aatr+=tt
             elif j<188:
                 for t in tt:
-                    shutil.move('data/temp/'+t,'./data/test/'+t)
+                    shutil.move(datapath+'temp/'+t,datapath+'test/'+t)
                 aate+=tt
             else:
                 for t in tt:
-                    shutil.move('data/temp/'+t,'./data/valid/'+t)
+                    shutil.move(datapath+'temp/'+t,datapath+'valid/'+t)
                 aava+=tt
         else:
             print('tt',tt)
@@ -168,17 +167,17 @@ def allocate_to_train_test_valid():
 
 
 
-def construct_permeability(n_test=1, n_valid=1, seed=0, augment=0):
+def construct_permeability(n_test=1, n_valid=1, seed=0, augment=0,datapath=datapath+'',datadir='/home/amit/ga/BIO/Junctions_Outlines_Annotated/Permeability'):
     np.random.seed(seed)
 
 
-    shutil.rmtree('data/permeability', ignore_errors=True)
+    shutil.rmtree(datapath+'permeability', ignore_errors=True)
 
-    os.makedirs('data/permeability',exist_ok=True)
-    os.makedirs('data/permeability/train',exist_ok=True)
-    os.makedirs('data/permeability/test',exist_ok=True)
-    os.makedirs('data/permeability/valid',exist_ok=True)
-    datadir = '/home/amit/ga/BIO/Junctions_Outlines_Annotated/Permeability'
+    os.makedirs(datapath+'permeability',exist_ok=True)
+    os.makedirs(datapath+'permeability/train',exist_ok=True)
+    os.makedirs(datapath+'permeability/test',exist_ok=True)
+    os.makedirs(datapath+'permeability/valid',exist_ok=True)
+    
     leakiness_max = 1570
     dates = os.listdir(datadir) # 0227, 0307, 0906
     count_train, count_valid, count_test = 0, 0, 0
@@ -219,17 +218,17 @@ def construct_permeability(n_test=1, n_valid=1, seed=0, augment=0):
             #img = Image.fromarray(img)
             img = Image.fromarray(img.astype(np.uint8))
             print('MIN',np.min(img))
-            img.save(os.path.join('data/permeability', split,'leakiness'+str(count)+'.tif'))
+            img.save(os.path.join(datapath+'permeability', split,'leakiness'+str(count)+'.tif'))
             file = files[0][:3] + str(selected[i]) + '_w2642zyla' + ('-1' if date.endswith('DF') else '')  + '.tif'
             path = os.path.join(datadir, date, file)
             img = stretch_image(plt.imread(path))
             img = ((img-img.min())/(img.max()-img.min())*255).astype(np.uint8)
             img = Image.fromarray(img)
-            img.save(os.path.join('data/permeability', split,'actin'+str(count)+'.tif'))
+            img.save(os.path.join(datapath+'permeability', split,'actin'+str(count)+'.tif'))
             file = files[0][:3] + str(selected[i]) + '_w3561zyla' + ('-1' if date.endswith('DF') else '')  + '.tif'
             path = os.path.join(datadir, date, file)
             img = stretch_image(plt.imread(path))
             img = ((img-img.min())/(img.max()-img.min())*255).astype(np.uint8)
             img = Image.fromarray(img)
-            img.save(os.path.join('data/permeability', split,'junction'+str(count)+'.tif'))  
+            img.save(os.path.join(datapath+'permeability', split,'junction'+str(count)+'.tif'))  
     print(count_train, count_test, count_valid)

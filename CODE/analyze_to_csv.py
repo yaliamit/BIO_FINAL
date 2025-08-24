@@ -10,8 +10,8 @@ import re
 from utils import get_file_by_num, get_file_numbers
 
 
-def process_files(device,j,model_name_a,model_name_o,target='test/',gt=False):
-        ff=get_file_by_num('./data/'+target,j)
+def process_files(device,j,model_name_a,model_name_o,target='test/',gt=False,datapath='data/'):
+        ff=get_file_by_num(datapath+target,j)
         #print(j,ff)
         celldata=[]
         if 'DF' in ff[0]:
@@ -20,11 +20,11 @@ def process_files(device,j,model_name_a,model_name_o,target='test/',gt=False):
             celltype='UF'
         for f in ff:
             if 'actin' in f:
-                ima = io.imread(os.path.join('./data/',target,f))
+                ima = io.imread(os.path.join(datapath,target,f))
             elif 'junction' in f:
-                imj = io.imread(os.path.join('./data/',target, f))
+                imj = io.imread(os.path.join(datapath,target, f))
             elif 'outline' in f:
-                imo =io.imread(os.path.join('./data/',target, f))
+                imo =io.imread(os.path.join(datapath,target, f))
         imj_p=imo_p=None
         if not gt:
             imj_p=predict_file(device,None,model_name_a,None,x_prefix='actin',
@@ -100,10 +100,7 @@ def analyze_cell(j,o,ima, imj, celltype, reduced=0):
             data.append(j)
             data.append(k)
             celldata.append(data)
-        #print(len(celldata))    
-        #print(celldata)
-        #celldata=np.array(celldata)
-        #print(j,np.array(celldata).shape)    
+       
         return(celldata)
 
 
@@ -202,10 +199,10 @@ def match_points(cdt,cdp):
 
 
 
-def analyze_p(device,model_name_a, model_name_o,target='test/',reduced=0,gt=False,dfp=None):
+def analyze_p(device,model_name_a, model_name_o,target='test/',reduced=0,gt=False,dfp=None,datapath='data/'):
     celldata = []
  
-    ii=get_file_numbers('./data/'+target)
+    ii=get_file_numbers(datapath+target)
     blank=np.zeros(13,dtype=np.int32)
     ii=np.sort(ii)
     ii=np.unique(ii)
@@ -235,12 +232,12 @@ def analyze_p(device,model_name_a, model_name_o,target='test/',reduced=0,gt=Fals
                     bl=blank.copy()
                     bl[11]=j
                     data[k].extend(list(bl))
-            #print('lendata',len(data),len(data[0]))
+            
             celld=np.array(data)
         celldata.append(celld)  
-    #print('celldata',len(celldata))
+    
     celldata=np.concatenate(celldata,axis=0)
-    #print(celldata.shape)
+  
     df = pd.DataFrame(celldata)
     if dfp is None:
         df.columns = ['area', 'major_minor_ratio', 'mean_intensity_a', 'mean_intensity_v', 'mean_intensity_f', 'fraction_1', 'fraction_2', 'fraction_3','centroid_x','centroid_y','celltype','image_idx','cell_idx']

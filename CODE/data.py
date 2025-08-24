@@ -8,7 +8,7 @@ from utils import apply_trans, augment_background_thick
 import re
 
 class WindowData(Dataset):
-    def  __init__(self, split='train', x_prefix='actin', y_prefix='junction', data_path='./data', continuous=1, reduced=0,
+    def  __init__(self, split='train', x_prefix='actin', y_prefix='junction', data_path='./data', pname=None, continuous=1, reduced=0,
                 seed=0, img_size=(1509,1053), window_size=(200,200), small_window_size=150, n_window=200, n_channels=1,
                 trans_type='aff', device='cuda', r00=0.1, r11=0.1, r01=1, r10=1, n_selected_img=20, extra_dir=0, bdy=5, mrg=25, leak_thresh=.1, flip=True):
         np.random.seed(seed)
@@ -23,8 +23,11 @@ class WindowData(Dataset):
             split='test'
         # Predict outline from predicted junctions already computed in the pred_directory.
         if 'pred' in x_prefix:
-            self.directory = os.path.join('./data', splita)
-            self.pred_directory = os.path.join(data_path,splita)
+            self.directory = os.path.join(data_path,splita)
+            self.pred_directory = os.path.join(data_path,'pred',pname,splita)
+            print('pname',pname)
+            print('pred_dir',self.pred_directory)
+            
         else:
             self.directory = os.path.join(data_path, splita)
         print(self.directory)

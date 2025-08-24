@@ -3,7 +3,6 @@ import torch
 import argparse
 import torch.nn as nn
 from skimage import io
-#from data import WindowData_actin_junction, WindowData_junction_outline, WindowData_actin_junction_outline, WindowData_pred_junction_outline
 from predict import predict_file
 from utils import load_model, dice_loss, evaluate, get_file_numbers, get_file_by_num
 import os
@@ -24,10 +23,10 @@ def process_file(device,ima,model_name_a,model_name_o,target='test/'):
              return imo_p
 
 
-def test_new(device, model_name_a, model_name_o,target='test/',reduced=0):
+def test_new(device, model_name_a, model_name_o,target='test/',reduced=0,data_path='data/'):
     
     fid = open('./Output/log'+str(device).split(':')[1]+'.txt', 'a')
-    dir='data/'+target
+    dir=data_path+target
     ii=get_file_numbers(dir)
     ii=np.sort(ii)
     ii=np.unique(ii)

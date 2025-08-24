@@ -58,6 +58,8 @@ parser.add_argument('-trte', '--traintest', type = int, help ='test on train', d
 
 parser.add_argument('-na', '--model_name', type=str, help='name of model to predict with',default=None)
 parser.add_argument('-no', '--model_name_o', type=str, help='name of model to predict with',default=None)
+parser.add_argument('-pna', '--pname', type=str, help='name of folders with predictions',default=None)
+
 parser.add_argument('-di', '--direct_test', type=str, help='name of model to predict with',default=0)
 
 
@@ -108,11 +110,11 @@ if __name__ == '__main__':
         torch.manual_seed(args.seed)
 
         # Setup the training set loader and the validation set loader. 
-        trainset = WindowData(split='train',img_size=img_size, x_prefix=args.x_prefix, y_prefix=args.y_prefix, data_path=args.data_path,  n_selected_img=args.n_selected,
+        trainset = WindowData(split='train',img_size=img_size, x_prefix=args.x_prefix, y_prefix=args.y_prefix, data_path=args.data_path, pname=args.pname, n_selected_img=args.n_selected,
             continuous=continuous, trans_type=args.trans_type, device=device, r01=args.affine_coef, r10=args.affine_coef, seed=args.seed, 
             reduced=args.reduced, n_window= args.n_window, n_channels=n_channels, window_size= (args.window_size, args.window_size), 
             small_window_size= int(args.window_size*0.75),  bdy=args.bdy, mrg=args.mrg, leak_thresh=args.leak_thresh)
-        validset = WindowData(split='valid', img_size=img_size,x_prefix=args.x_prefix, y_prefix=args.y_prefix, data_path=args.data_path, device=device, n_selected_img=args.n_selected,
+        validset = WindowData(split='valid', img_size=img_size,x_prefix=args.x_prefix, y_prefix=args.y_prefix, data_path=args.data_path, pname=args.pname, device=device, n_selected_img=args.n_selected,
             continuous=continuous, seed=args.seed, reduced=args.reduced, n_window = args.n_window, n_channels=n_channels,
             window_size= (args.window_size, args.window_size), small_window_size= int(args.window_size*0.75), extra_dir=args.extra_dir, leak_thresh=args.leak_thresh)
         
@@ -182,7 +184,7 @@ if __name__ == '__main__':
             split='traintest'
         f = open('./Output/log'+str(args.cuda).split(':')[1]+'.txt', 'a')
         f.write(f'Testing:{split}\n')
-        testset = WindowData(split=split, img_size=img_size,x_prefix=args.x_prefix, y_prefix=args.y_prefix, data_path=args.data_path, 
+        testset = WindowData(split=split, img_size=img_size,x_prefix=args.x_prefix, y_prefix=args.y_prefix, data_path=args.data_path, pname=args.pname,
             continuous=continuous, reduced=args.reduced, n_window = args.n_window, n_channels=n_channels, extra_dir=args.extra_dir)
         model = load_model(os.path.join(args.model_path, args.model_name+'.pkl'))
         #print(model)
