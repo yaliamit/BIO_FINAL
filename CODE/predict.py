@@ -52,17 +52,17 @@ def predict_file(device,target,model_name,file_num,x_prefix,y_prefix, zero_thres
 
     return(img)
 
-def predict(device, name, name1, x_prefix='actin', y_prefix='junction', pad_size=0, zero_thresh=0, replace_pj = 0, rewrite=True,datapath='data/'):
+def predict(device, model_name, pred_folder_name, x_prefix='actin', y_prefix='junction', pad_size=0, zero_thresh=0,datapath='data/'):
 #affine_coef=1,  trans_type='mix', kernel_size=5, rewrite=True, 
             #reduced=True, n_layers = 4, n_window = 200, window_size = 200, margin = 0):
     temp =  ''
-    model = load_model('./saved_models/' + name + '.pkl').to(device)
+    model = load_model('./saved_models/' + model_name + '.pkl').to(device)
     model.eval()
     for target in ['train', 'valid', 'test']:
         dirpath = datapath+ target
-        if name1 is not None and 'pred' in x_prefix:
-            dirpath = datapath+'pred/'+name1+'/'+target
-        if 'leakiness' in y_prefix:
+        if pred_folder_name is not None and 'pred' in x_prefix:
+            dirpath = datapath+'pred/'+pred_folder_name+'/'+target
+        elif 'leakiness' in y_prefix:
             dirpath = datapath+'permeability/' + target
         
         filenames = os.listdir(dirpath)
@@ -71,19 +71,22 @@ def predict(device, name, name1, x_prefix='actin', y_prefix='junction', pad_size
             for filen in filenames: 
                 ss = filen.split('_')
                 pref=''
-                if len(ss)>1:
-                    pref=ss[0]+'_'
-                    if len(ss)>2:
-                        filename='_'.join(ss[1:])
-                    else:
-                        filename=ss[1]
+
+                if 'DF' in filen or 'UF' in filen:
+                    if len(ss)>1:
+                        pref=ss[0]+'_'
+                        if len(ss)>2:
+                            filename='_'.join(ss[1:])
+                        else:
+                            filename=ss[1]
                 else:
                     filename=filen
-                #print(filename)
+
                 if filename.startswith(x_prefix):
-                    if target == 'test' and name1 is None:
+                    if target == 'test' and pred_folder_name is None:
                         file_num = int(filename.split('.')[0].split('n')[1])
                     filepath = os.path.join(dirpath, pref+filename)
+                    print('filepath',filepath)
                     x = plt.imread(filepath)/255
                     x = torch.from_numpy(x[None,None,:,:]).to(device, dtype=torch.float)
                     x=torch.nn.functional.pad(x,(pad_size,pad_size,pad_size,pad_size),"constant", 0)
@@ -97,16 +100,19 @@ def predict(device, name, name1, x_prefix='actin', y_prefix='junction', pad_size
                     elif y_prefix=='junction':
                         img =(img.cpu().numpy().squeeze()*255).astype(np.uint8)
                     
-                       
+                    if y_prefix=='leakiness':
+                        img=img.squeeze()
+                        img[1][img[0]<=zero_thresh]=0
+                        img=img[1].cpu().numpy()
                     img = Image.fromarray(img)
-                    if replace_pj: 
-                        if x_prefix.startswith("actin") and y_prefix.startswith('junction'): 
-                            img.save(datapath+target+ pref+'/pred_'+ y_prefix + filename[len(x_prefix):]) 
-                    elif rewrite: 
-                            newpath=datapath+'pred/'+name+'/'+target+'/'
-                            if not os.path.exists(newpath):
+
+                    thr=''
+                    if y_prefix=='leakiness':
+                        thr=str(zero_thresh)
+                    newpath=datapath+'pred/'+model_name+'_thr_'+thr+'/'+target+'/'
+                    if not os.path.exists(newpath):
                                     os.makedirs(newpath)
-                            img.save(newpath+pref +'pred_'+  y_prefix + temp + filename[len(x_prefix):])
+                    img.save(newpath+pref +'pred_'+  y_prefix + temp + filename[len(x_prefix):])
                     
 
 
@@ -115,16 +121,14 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--device', type=str, help='index of the device', default=3)
     parser.add_argument('-x', '--x_prefix', type=str, help='input category', default='actin')
     parser.add_argument('-y', '--y_prefix', type=str, help='output category', default='junction')
-    parser.add_argument('-n', '--rewrite', type=int, help='rewrite folder', default=0)
     parser.add_argument('-t', '--zero_thresh', type=float, help='threshold for background', default=0.)
-    parser.add_argument('-p','--pred_junction_replace', type = int, help = 'replace tr/te/val pics for pred_junctions', default = 0)
     parser.add_argument('-m', '--pad_size', type = int, help ='padding', default = 0)
-    parser.add_argument('-na', '--name', type=str, help='name of model to predict with',default=None)
-    parser.add_argument('-naa', '--name1', type=str, help='name of model to predict with',default=None)
+    parser.add_argument('-na', '--model_name', type=str, help='name of model to predict with',default=None)
+    parser.add_argument('-naa', '--pred_folder_name', type=str, help='name of model to predict with',default=None)
     parser.add_argument('-dp', '--data_path', type=str, help='name of data path',default='data/')
 
 
     args = parser.parse_args()
     device = 'cuda:' + str(args.device)
-    predict(device, args.name, args.name1,  x_prefix=args.x_prefix, y_prefix=args.y_prefix, pad_size=args.pad_size, zero_thresh=args.zero_thresh, replace_pj = args.pred_junction_replace,rewrite=args.rewrite,datapath=args.data_path)
+    predict(device, args.model_name, args.pred_folder_name,  x_prefix=args.x_prefix, y_prefix=args.y_prefix, pad_size=args.pad_size, zero_thresh=args.zero_thresh, datapath=args.data_path)
      

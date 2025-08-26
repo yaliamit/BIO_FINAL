@@ -25,8 +25,7 @@ class WindowData(Dataset):
         if 'pred' in x_prefix:
             self.directory = os.path.join(data_path,splita)
             self.pred_directory = os.path.join(data_path,'pred',pname,splita)
-            print('pname',pname)
-            print('pred_dir',self.pred_directory)
+          
             
         else:
             self.directory = os.path.join(data_path, splita)
@@ -47,6 +46,7 @@ class WindowData(Dataset):
         # Transformation of output image.
         self.transform_y = apply_trans((1,)+window_size, 'aff', device)
         self.perm=y_prefix=='leakiness'
+        print('cont',continuous,reduced)
         self.import_image(x_prefix, y_prefix, continuous, reduced, split,bdy,mrg,leak_thresh)
         #print('self.x_img',self.x_img.shape)
         # In test mode you read in the whole big image and run the convolutional model on it.
@@ -85,17 +85,17 @@ class WindowData(Dataset):
         x_img, y_img = [], []
         self.n_img = 0
         for filen in fx: 
-            ss=filen.split('_')
             pref=''
-            if len(ss)>1:
-                pref=ss[0]+'_'
-                if len(ss)>2:
-                    filename='_'.join(ss[1:])
-                else:
-                    filename=ss[1]
+            if 'DF' in filen or 'UF' in filen:
+                ss=filen.split('_')
+                if len(ss)>1:
+                    pref=ss[0]+'_'
+                    if len(ss)>2:
+                        filename='_'.join(ss[1:])
+                    else:
+                        filename=ss[1]
             else:
                 filename=filen
-
             if filename.startswith(x_prefix):
                 dir=self.directory
                 if 'pred' in x_prefix:

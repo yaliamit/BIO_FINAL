@@ -40,4 +40,4 @@ for i in '_50' '_100' '_150' '';
   done
 
  # Store predicted outlines in data/pred folder
-python3 CODE/predict.py -x pred_junction -y outline  -p 0 -n 1 --name1=$name --name=$name_outline --device $c --data_path=$dd
+python3 CODE/predict.py -x pred_junction -y outline  -p 0 -n 1 --pred_folder_name=$name --model_name=$name_outline --device $c --data_path=$dd
