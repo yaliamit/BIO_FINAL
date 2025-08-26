@@ -14,17 +14,14 @@ def predict_file(device,target,model_name,file_num,x_prefix,y_prefix, zero_thres
     model.eval()
     #print(model_name)
     if im is None:
-        dirpath = data_path+'permeability/' + target
+        dirpath = data_path + target
 
-        if 'junc' == x_prefix and 'leakiness' in y_prefix:
-            dirpath = data_path+'leak_outline/'
-        elif name1 is not None and 'junction' in x_prefix:
+        if name1 is not None and 'junction' in x_prefix:
             if 'pred' in x_prefix:
                 dirpath = data_path+'pred/'+name1+'/'+target
         elif 'junction' in x_prefix and 'outline' in y_prefix:
                 dirpath = data_path+'permeability/'+target
-        elif 'junc' == x_prefix and 'outline' in y_prefix:
-                dirpath = data_path+'leak_outline/'
+        
 
         filename=x_prefix+str(file_num)+'.tif'
         filepath = os.path.join(dirpath, filename)
