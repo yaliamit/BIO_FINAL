@@ -2,6 +2,7 @@
 
 dd="./data/permeability/"
 name="actin_junction_mix_0.1_kernel_5_nlayers_4_ds_100_lrstep_100_ws_200_fl_0_1"
+# Choose x_prefix
 #x_prefix="pred_junction"
 x_prefix="actin"
 
