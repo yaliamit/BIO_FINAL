@@ -1,11 +1,11 @@
 #!/bin/bash -x
 
 dd="./data/permeability/"
-name="actin_junction_mix_0.1_kernel_5_nlayers_4_ds_100_lrstep_100_ws_200_fl_0_1"
+#name="actin_junction_mix_0.1_kernel_5_nlayers_4_ds_100_lrstep_100_ws_200_fl_0_1"
 # Choose x_prefix
 #x_prefix="pred_junction"
 x_prefix="actin"
-
+x_prefix="junction"
 c=0 # Which gpu to use
 t=1 # Train
 
@@ -34,6 +34,7 @@ fi
 
 name_leak="$(tail -1 Output/log_leak_$c.txt)" 
 echo $name_leak
+name_leak="junction_leakiness_mix_1.0_ws_200_zero_weight_0.4_leak_thresh_0.1_fl_0_a_1.0_1"
 
  # Store predicted outlines in data/pred folder
 python3 CODE/predict.py -x $x_prefix -y leakiness  --zero_thresh=.8  --pred_folder_name=$name --model_name=$name_leak --device $c --data_path=$dd
