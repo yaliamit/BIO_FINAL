@@ -60,7 +60,6 @@ def predict(device, model_name, pred_folder_name, x_prefix='actin', y_prefix='ju
         if pred_folder_name is not None and 'pred' in x_prefix:
             dirpath = datapath+'pred/'+pred_folder_name+'/'+target
         
-        
         filenames = os.listdir(dirpath)
         
         with torch.no_grad():

@@ -2,8 +2,10 @@
 
 dd="./data/permeability/"
 name="actin_junction_mix_0.1_kernel_5_nlayers_4_ds_100_lrstep_100_ws_200_fl_0_1"
+# Choose x_prefix
 #x_prefix="pred_junction"
 x_prefix="actin"
+
 c=0 # Which gpu to use
 t=1 # Train
 
@@ -17,9 +19,9 @@ fi
 echo "cuda" $c "train" $t
 
 # Store all predicted junctions in a new data/pred folder.
-    if [ $x_prefix == "pred_junction" ]; then
+if [ $x_prefix == "pred_junction" ]; then
     	python3 CODE/predict.py -x actin -y junction --model_name=$name --device $c --data_path=$dd
-    fi
+fi
 
 if [ $t -eq 1 ]; then	    
     # Train outline prediction from junction prediction
@@ -34,4 +36,4 @@ name_leak="$(tail -1 Output/log_leak_$c.txt)"
 echo $name_leak
 
  # Store predicted outlines in data/pred folder
-python3 CODE/predict.py -x $x_prefix -y leakiness  --zero_thresh=.6  --pred_folder_name=$name --model_name=$name_leak --device $c --data_path=$dd
+python3 CODE/predict.py -x $x_prefix -y leakiness  --zero_thresh=.8  --pred_folder_name=$name --model_name=$name_leak --device $c --data_path=$dd
