@@ -59,8 +59,7 @@ def predict(device, model_name, pred_folder_name, x_prefix='actin', y_prefix='ju
         dirpath = datapath+ target
         if pred_folder_name is not None and 'pred' in x_prefix:
             dirpath = datapath+'pred/'+pred_folder_name+'/'+target
-        elif 'leakiness' in y_prefix:
-            dirpath = datapath+'permeability/' + target
+        
         
         filenames = os.listdir(dirpath)
         
