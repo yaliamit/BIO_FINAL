@@ -53,6 +53,7 @@ def predict(device, model_name, pred_folder_name, x_prefix='actin', y_prefix='ju
 #affine_coef=1,  trans_type='mix', kernel_size=5, rewrite=True, 
             #reduced=True, n_layers = 4, n_window = 200, window_size = 200, margin = 0):
     temp =  ''
+    
     model = load_model('./saved_models/' + model_name + '.pkl').to(device)
     model.eval()
     for target in ['train', 'valid', 'test']:
@@ -109,7 +110,10 @@ def predict(device, model_name, pred_folder_name, x_prefix='actin', y_prefix='ju
                                     os.makedirs(newpath)
                     img.save(newpath+pref +'pred_'+  y_prefix + temp + filename[len(x_prefix):])
                     
-
+    if 'leakiness' in args.y_prefix:
+        newpath=datapath+'pred/'+model_name+'_thr_'+thr
+        file_name='./Output/log_leak_'+str(device).split(':')[1]+'.txt'
+        os.rename(file_name,newpath+pref+'/log.txt')        
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Parser')

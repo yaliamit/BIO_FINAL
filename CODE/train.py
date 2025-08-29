@@ -162,4 +162,4 @@ def trainer(device, trainset, validset, model, save_name, epochs, seed=0, weight
             
         if epoch % 50 == 0 and epoch > 0:
             save_model(save_name + '_' + str(epoch) + '.pkl', model)
-            
+        fid.close()
