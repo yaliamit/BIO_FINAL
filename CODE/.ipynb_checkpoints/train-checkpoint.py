@@ -109,7 +109,6 @@ def trainer(device, trainset, validset, model, save_name, epochs, seed=0, weight
             else:
                 if weights != None:
                     weights = compute_weights(y, num_classes=len(weights))
-                    #weights[0]=0
                     weights /= weights.sum()
                     criterion.weight = weights
                 loss = criterion(pred, y.squeeze(dim=1))
@@ -163,4 +162,4 @@ def trainer(device, trainset, validset, model, save_name, epochs, seed=0, weight
             
         if epoch % 50 == 0 and epoch > 0:
             save_model(save_name + '_' + str(epoch) + '.pkl', model)
-            
+    fid.close()
