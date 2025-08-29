@@ -72,7 +72,7 @@ if __name__ == '__main__':
     device = args.cuda
     #
     if args.y_prefix=='leakiness':
-        name = args.x_prefix + '_' + args.y_prefix + '_' + args.trans_type + '_' + str(args.affine_coef) + "_ws_"+str(args.window_size)+"_zero_weight_"+str(args.zero_weight)+"_leak_thresh_"+str(args.leak_thresh) + "_fl_"+str(args.flip)
+        name = args.x_prefix + '_' + args.y_prefix + '_' + args.trans_type + '_' + str(args.affine_coef) + "_ws_"+str(args.window_size)+"_ga"+str(args.ga)+"_"+str(args.lr_step)+"_leak_thresh_"+str(args.leak_thresh) + "_fl_"+str(args.flip)
     else:
         name = args.x_prefix + '_' + args.y_prefix + '_' + args.trans_type + '_' + str(args.affine_coef) + '_kernel_' + str(args.kernel_size)+ "_nlayers_" + str(args.n_layers) +"_ds_"+str(args.dice_steps)+"_lrstep_"+str(args.lr_step)+"_ws_"+str(args.window_size)+"_fl_"+str(args.flip)
     
