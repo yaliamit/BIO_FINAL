@@ -16,14 +16,12 @@ def predict_file(device,target,model_name,file_num,x_prefix,y_prefix, zero_thres
     
     if im is None:
         dirpath = data_path + target
-
         if name1 is not None and 'junction' in x_prefix:
             if 'pred' in x_prefix:
                 dirpath = data_path+'pred/'+name1+'/'+target
         
         filename=x_prefix+str(file_num)+'.tif'
         filepath = os.path.join(dirpath, filename)
- 
         x = plt.imread(filepath)
     else:
         x=im
@@ -44,10 +42,8 @@ def predict_file(device,target,model_name,file_num,x_prefix,y_prefix, zero_thres
         img =(img.cpu().numpy().squeeze()*255).astype(np.uint8)
     else:
         img=img.squeeze()
-        
         img[1][img[0]<=zero_thresh]=0
         img=img[1].cpu().numpy()
-
     return(img)
 
 def predict(device, model_name, pred_folder_name, x_prefix='actin', y_prefix='junction', pad_size=0, zero_thresh=0,datapath='data/'):

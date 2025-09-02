@@ -11,6 +11,7 @@ from utils import get_file_by_num, get_file_numbers
 
 
 def process_files(device,j,model_name_a,model_name_o,model_name_leak=None, target='test/',gt=False,datapath='data/'):
+        leak_thresh=.1
         ff=get_file_by_num(datapath+target,j)
         print(j,ff)
         celldata=[]
@@ -29,27 +30,35 @@ def process_files(device,j,model_name_a,model_name_o,model_name_leak=None, targe
                 imo =io.imread(os.path.join(datapath,target, f))
             elif 'leakiness' in f:
                 iml =io.imread(os.path.join(datapath,target, f))
+                iml = iml/255.
+                if leak_thresh>=0:
+                    iml[iml<leak_thresh]=0
         imj_p=imo_p=iml_p=None
 
         imj_p=predict_file(device,None,model_name_a,None,x_prefix='actin',
                          y_prefix='junction', zero_thresh=0, im=ima,  name1=None)
-
-        imo_p=predict_file(device,None,model_name_o,None,
+        if 'pred' in model_name_o:
+            imo_p=predict_file(device,None,model_name_o,None,
                                x_prefix='pred_junction',
                          y_prefix='outline', zero_thresh=0, im=imj_p,  name1=None)
-
+        else:
+            imo_p=predict_file(device,None,model_name_o,None,
+                               x_prefix='junction',
+                         y_prefix='outline', zero_thresh=0, im=imj_p,  name1=None)
 
         if model_name_leak is not None:
-             
                 if 'pred_junction' in model_name_leak:
                     iml_p=predict_file(device,None,model_name_leak,None,    
-        x_prefix='pred_junction',y_prefix='leakiness',zero_thresh=0.8,
+                            x_prefix='pred_junction',y_prefix='leakiness',zero_thresh=0.8,
                             im=imj_p,  name1=None, data_path=datapath)
-                elif 'junction' in model_name_leak:                   iml_p=predict_file(device,None,model_name_a,None,x_prefix='junction',
-                         y_prefix='leakiness', zero_thresh=0.8, im=imj_p,  name1=None,data_path=datapath)
+                elif 'junction' in model_name_leak:
+                    print('junction')
+                    iml_p=predict_file(device,'test/',model_name_leak,j,
+                                       x_prefix='junction',y_prefix='leakiness',
+                                       zero_thresh=0.8,data_path=datapath)
                 elif 'actin' in model_name_leak:
-                    iml_p=predict_file(device,None,model_name_a,None,x_prefix='actin',
-                         y_prefix='leakiness', zero_thresh=0.8, im=imj_p,  name1=None, data_path=datapath)
+                    iml_p=predict_file(device,'test/',model_name_a,j,x_prefix='actin',
+                         y_prefix='leakiness', zero_thresh=0.8, name1=None, data_path=datapath)
 
         return ima, imj, imo, iml,  imj_p, imo_p, iml_p, celltype
           
@@ -106,8 +115,9 @@ def analyze_cell(j,o,ima, imj, iml, celltype, reduced=0):
 
             # Measure proportions on boundaries, because o is only boundaries.
             propsJ = measure.regionprops(tempd, intensity_image=o)
-            propsL = measure.regionprops(tempd, intensity_image=iml)
-            #print(propsL[0].intensity_image.shape,propsL[0].intensity_image.max(),propsL[0].intensity_image.min())
+            propsL=None
+            if iml is not None:
+                propsL = measure.regionprops(tempd, intensity_image=iml)
             pixel_values = propsJ[0].intensity_image if propsJ else np.array([])
             
             
@@ -115,7 +125,7 @@ def analyze_cell(j,o,ima, imj, iml, celltype, reduced=0):
             n2 = np.sum(pixel_values == 2)
             
             rl1=rl2=0.000
-            if reduced:
+            if reduced and propsL is not None:
                 tot = n1 + n2
                 if n1>0:
                     rl1=np.mean(propsL[0].intensity_image[pixel_values==1])
@@ -151,18 +161,18 @@ def match_points_from_ims(j,o,ot,ima, imj, celltype, reduced=0):
 
     
   
-    cdp=analyze_cell(j,o,ima, imj, celltype, reduced)
-    cdt=analyze_cell(j,ot,ima, imj,celltype, reduced)
+    cdp=analyze_cell(j,o,ima, imj, None, celltype, reduced)
+    cdt=analyze_cell(j,ot,ima, imj,None, celltype, reduced)
     if len(cdt)==0:
         return None, None, None, None, None, None, None
     cdt=np.array(cdt)
-    centt=np.float32(cdt[:,8:10])
+    
+    centt=np.float32(cdt[:,10:12])
     centp=None
     if len(cdp)>0:
         cdp=np.array(cdp)
-        centp=np.float32(cdp[:,8:10])
-    
-    
+        centp=np.float32(cdp[:,10:12])
+  
     ctp=[]
     used_is=[]
     centt_m=[]
@@ -241,18 +251,21 @@ def match_points(cdt,cdp):
 
 
 
-def analyze_p(device,model_name_a, model_name_o,model_name_l=None, target='test/',reduced=0,gt=False,dfp=None,datapath='data/'):
+def analyze_p(device,model_name_a, model_name_o,model_name_l=None, target='test/',reduced=0,gt=False,dfp=None,thr=.1,thr_p=.8,datapath='data/'):
     celldata = []
  
     ii=get_file_numbers(datapath+target)
     blank=np.zeros(15,dtype=np.int32)
     ii=np.sort(ii)
     ii=np.unique(ii)
-    
+    print(ii)
     for i,j in enumerate(ii):
         ima, imj, imo, iml, imj_p,imo_p, iml_p, celltype \
         =process_files(device,j,model_name_a,model_name_o,model_name_leak=model_name_l, gt=gt,datapath=datapath)
-       
+        
+        if iml is not None:
+            iml=(iml>0).astype(np.float32)
+            iml_p=(iml_p>0).astype(np.float32)
         
         if gt and imo is not None:
             print('there',gt,imo is not None)
@@ -264,7 +277,7 @@ def analyze_p(device,model_name_a, model_name_o,model_name_l=None, target='test/
             imleak=iml
         else:
             imleak=iml_p
-
+ 
         data=analyze_cell(j,o,ima, imj, imleak, celltype, reduced=reduced) 
         print('data',len(data))
         celld=np.atleast_2d(np.array(data))
@@ -293,7 +306,7 @@ def analyze_p(device,model_name_a, model_name_o,model_name_l=None, target='test/
     print(celldata.shape)
     df = pd.DataFrame(celldata)
     if dfp is None:
-        df.columns = ['area', 'major_minor_ratio', 'mean_intensity_a', 'mean_intensity_v', 'mean_intensity_f', 'fraction_bdy', 'fraction_broken', 'fraction_3','leak_on_bdy','leak_on_broken','centroid_x','centroid_y','celltype','image_idx','cell_idx']
+        df.columns = ['area', 'major_minor_ratio', 'mean_intensity_a', 'mean_intensity_v', 'mean_intensity_f', 'fraction_bdy_p', 'fraction_broken_p', 'fraction_3','leak_on_bdy','leak_on_broken','centroid_x','centroid_y','celltype','image_idx','cell_idx']
     else:
       df.columns=['area', 'major_minor_ratio', 'mean_intensity_a', 'mean_intensity_v', 'mean_intensity_f', 'fraction_bdy', 'fraction_broken', 'fraction_3','leak_on_bdy','leak_on_broke','centroid_x','centroid_y','celltype','image_idx','cell_idx','area_p', 'major_minor_ratio_p', 'mean_intensity_a_p', 'mean_intensity_v_p','mean_intensity_f_p', 'fraction_bdy_p', 'fraction_broken_p', 'fraction_3_p','leak_on_bdy_p','leak_on_broke_p','centroid_x_p','centroid_y_p','celltype_p','image_idx_p','cell_idx_p']
     
@@ -309,4 +322,4 @@ def analyze_p(device,model_name_a, model_name_o,model_name_l=None, target='test/
     df.loc[:, tmp.columns] = np.round(tmp,decimals=2)
     
     
-    return df
+    return df, iml, iml_p
