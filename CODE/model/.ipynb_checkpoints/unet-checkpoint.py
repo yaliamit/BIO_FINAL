@@ -70,7 +70,7 @@ class Unet(nn.Module):
         
         if str(self.LI)=='True':
             self.LI=2
-        
+
         if (self.n_classes == 1 and self.LI==0) or self.LI==2:
             return self.sigmoid(logits)
         elif self.LI==1:

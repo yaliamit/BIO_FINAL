@@ -12,28 +12,28 @@ def predict_file(device,target,model_name,file_num,x_prefix,y_prefix, zero_thres
     model = load_model('./saved_models/' + model_name + '.pkl').to(device)
     
     model.eval()
-    #print(model_name)
+
+    
     if im is None:
         dirpath = data_path + target
 
         if name1 is not None and 'junction' in x_prefix:
             if 'pred' in x_prefix:
                 dirpath = data_path+'pred/'+name1+'/'+target
-        elif 'junction' in x_prefix and 'outline' in y_prefix:
-                dirpath = data_path+'permeability/'+target
         
-
         filename=x_prefix+str(file_num)+'.tif'
         filepath = os.path.join(dirpath, filename)
  
         x = plt.imread(filepath)
-        if 'im' in x_prefix and len(x.shape)>2:
-            x=x[:,:,0]
     else:
         x=im
-    x = torch.from_numpy(x[None,None,:,:]).to(device, dtype=torch.float)
+    xc=x.copy()
+    x = torch.from_numpy(xc[None,None,:,:]).to(device, dtype=torch.float)
+   
     x=torch.nn.functional.pad(x,(pad_size,pad_size,pad_size,pad_size),"constant", 0)
+
     img = model(x)
+
     img=img.detach()
 
     if pad_size>0:
@@ -44,6 +44,7 @@ def predict_file(device,target,model_name,file_num,x_prefix,y_prefix, zero_thres
         img =(img.cpu().numpy().squeeze()*255).astype(np.uint8)
     else:
         img=img.squeeze()
+        
         img[1][img[0]<=zero_thresh]=0
         img=img[1].cpu().numpy()
 
