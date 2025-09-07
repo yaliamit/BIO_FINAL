@@ -8,30 +8,43 @@ from utils import load_model
 import numpy as np
 import matplotlib.pyplot as plt
 
-def predict_file(device,target,model_name,file_num,x_prefix,y_prefix, zero_thresh=0, im=None, pad_size=0,  name1=None, data_path='data/'):
+def predict_file(device,target,model_name, file_num,x_prefix,y_prefix, zero_thresh=0, model_junction_name=None, im=None, pad_size=0,  name1=None, data_path='data/'):
     model = load_model('./saved_models/' + model_name + '.pkl').to(device)
     
     model.eval()
-
-    
+   
+    # Read in the image to be processed.
     if im is None:
         dirpath = data_path + target
+        # Option to read in predicted junctions already stored on disk.
         if name1 is not None and 'junction' in x_prefix:
             if 'pred' in x_prefix:
                 dirpath = data_path+'pred/'+name1+'/'+target
-        
-        filename=x_prefix+str(file_num)+'.tif'
+        # model_junction is always applied to 'actin'
+        if model_junction_name is None:
+            filename=x_prefix+str(file_num)+'.tif'
+        else:
+            filename='actin'+str(file_num)+'.tif'
         filepath = os.path.join(dirpath, filename)
-        x = plt.imread(filepath)
+        x = plt.imread(filepath)    
     else:
         x=im
     xc=x.copy()
     x = torch.from_numpy(xc[None,None,:,:]).to(device, dtype=torch.float)
-   
     x=torch.nn.functional.pad(x,(pad_size,pad_size,pad_size,pad_size),"constant", 0)
-
+   
+    img_junction=None
+    if model_junction_name is not None:
+        model_junction = load_model('./saved_models/' + model_junction_name + '.pkl').to(device)
+        img_junction=model_junction(x)
+        x=img_junction.clone()
+        img_junction=img_junction.detach()
+        if pad_size>0:
+            img_junction = img_junction[:,:,pad_size:-pad_size,pad_size:-pad_size]
+            img_junction =(img_junction.cpu().numpy().squeeze()*255).astype(np.uint8)
+        
+        
     img = model(x)
-
     img=img.detach()
 
     if pad_size>0:
@@ -44,7 +57,7 @@ def predict_file(device,target,model_name,file_num,x_prefix,y_prefix, zero_thres
         img=img.squeeze()
         img[1][img[0]<=zero_thresh]=0
         img=img[1].cpu().numpy()
-    return(img)
+    return(img,img_junction)
 
 def predict(device, model_name, pred_folder_name, x_prefix='actin', y_prefix='junction', pad_size=0, zero_thresh=0,datapath='data/'):
 #affine_coef=1,  trans_type='mix', kernel_size=5, rewrite=True, 
