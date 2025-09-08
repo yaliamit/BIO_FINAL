@@ -70,7 +70,6 @@ def predict(device, model_name, pred_folder_name, x_prefix='actin', y_prefix='ju
         dirpath = datapath+ target
         if pred_folder_name is not None and 'pred' in x_prefix:
             dirpath = datapath+'pred/'+pred_folder_name+'/'+target
-        
         filenames = os.listdir(dirpath)
         
         with torch.no_grad():
@@ -92,7 +91,7 @@ def predict(device, model_name, pred_folder_name, x_prefix='actin', y_prefix='ju
                     if target == 'test' and pred_folder_name is None:
                         file_num = int(filename.split('.')[0].split('n')[1])
                     filepath = os.path.join(dirpath, pref+filename)
-
+                
                     x = plt.imread(filepath)/255
                     x = torch.from_numpy(x[None,None,:,:]).to(device, dtype=torch.float)
                     x=torch.nn.functional.pad(x,(pad_size,pad_size,pad_size,pad_size),"constant", 0)
