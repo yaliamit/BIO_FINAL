@@ -120,17 +120,18 @@ def analyze_cell(j,o,ima, imj, iml, celltype, reduced=0):
                 propsL = measure.regionprops(tempd, intensity_image=iml)
             pixel_values = propsJ[0].intensity_image if propsJ else np.array([])
             
-            
+          
             n1 = np.sum(pixel_values == 1)
             n2 = np.sum(pixel_values == 2)
             
             rl1=rl2=0.000
-            if reduced and propsL is not None:
+            if reduced:
                 tot = n1 + n2
-                if n1>0:
-                    rl1=np.mean(propsL[0].intensity_image[pixel_values==1])
-                if n2>0:
-                    rl2=np.mean(propsL[0].intensity_image[pixel_values==2])
+                if propsL is not None:
+                    if n1>0:
+                        rl1=np.mean(propsL[0].intensity_image[pixel_values==1])
+                    if n2>0:
+                        rl2=np.mean(propsL[0].intensity_image[pixel_values==2])
 
             else:
                 n3 = np.sum(pixel_values == 3)

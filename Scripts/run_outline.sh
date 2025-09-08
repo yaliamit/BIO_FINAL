@@ -20,7 +20,7 @@ echo "cuda" $c "reduced" $r "train" $t
 
 if [ $t -eq 1 ]; then	
     # Train junction prediction from actin
-	python3 CODE/main.py --train -x actin -y junction -e 400 --lr .00001 --dice_steps 100 --lr_step 100 --ga 1. --save 1 --n_layers=4 --cuda cuda:$c --data_path=$dd
+	python3 CODE/main.py --train -x actin -y junction -e 400 -a 1.0 --lr .00001 --dice_steps 100 --lr_step 100 --ga 1. --save 1 --n_layers=4 --cuda cuda:$c --data_path=$dd
 	name="$(tail -1 Output/log$c.txt)" 
 	echo $name
     # Store all predicted junctions in a new data/pred folder.
