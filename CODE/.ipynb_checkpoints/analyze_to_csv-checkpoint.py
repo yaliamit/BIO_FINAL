@@ -11,7 +11,7 @@ from utils import get_file_by_num, get_file_numbers
 
 
 def process_files(device,j,model_name_a,model_name_o,model_name_leak=None, target='test/',gt=False,datapath='data/'):
-        leak_thresh=.1
+        leak_thresh=.2
         ff=get_file_by_num(datapath+target,j)
         print(j,ff)
         celldata=[]
@@ -35,29 +35,29 @@ def process_files(device,j,model_name_a,model_name_o,model_name_leak=None, targe
                     iml[iml<leak_thresh]=0
         imj_p=imo_p=iml_p=None
 
-        imj_p=predict_file(device,None,model_name_a,None,x_prefix='actin',
+        imj_p,_=predict_file(device,None,model_name_a,None,x_prefix='actin',
                          y_prefix='junction', zero_thresh=0, im=ima,  name1=None)
         if 'pred' in model_name_o:
-            imo_p=predict_file(device,None,model_name_o,None,
+            imo_p,_=predict_file(device,None,model_name_o,None,
                                x_prefix='pred_junction',
                          y_prefix='outline', zero_thresh=0, im=imj_p,  name1=None)
         else:
-            imo_p=predict_file(device,None,model_name_o,None,
+            imo_p,_=predict_file(device,None,model_name_o,None,
                                x_prefix='junction',
                          y_prefix='outline', zero_thresh=0, im=imj_p,  name1=None)
 
         if model_name_leak is not None:
                 if 'pred_junction' in model_name_leak:
-                    iml_p=predict_file(device,None,model_name_leak,None,    
+                    iml_p,_=predict_file(device,None,model_name_leak,None,    
                             x_prefix='pred_junction',y_prefix='leakiness',zero_thresh=0.8,
                             im=imj_p,  name1=None, data_path=datapath)
                 elif 'junction' in model_name_leak:
-                    print('junction')
-                    iml_p=predict_file(device,'test/',model_name_leak,j,
+   
+                    iml_p,_=predict_file(device,'test/',model_name_leak,j,
                                        x_prefix='junction',y_prefix='leakiness',
                                        zero_thresh=0.8,data_path=datapath)
                 elif 'actin' in model_name_leak:
-                    iml_p=predict_file(device,'test/',model_name_a,j,x_prefix='actin',
+                    iml_p,_=predict_file(device,'test/',model_name_a,j,x_prefix='actin',
                          y_prefix='leakiness', zero_thresh=0.8, name1=None, data_path=datapath)
 
         return ima, imj, imo, iml,  imj_p, imo_p, iml_p, celltype
@@ -268,7 +268,7 @@ def analyze_p(device,model_name_a, model_name_o,model_name_l=None, target='test/
             iml_p=(iml_p>0).astype(np.float32)
         
         if gt and imo is not None:
-            print('there',gt,imo is not None)
+            
             o=imo
         else:
             o=imo_p
