@@ -95,12 +95,17 @@ def stretch_image(img,low=2):
 
 def save_model(path, model):
     with open(path, 'wb') as file:  
-        pickle.dump(model, file)
-
+         pickle.dump(model, file)
+    #torch.save(model,path)
+    
 def load_model(path):
-    with open(path, 'rb') as f:
-        model = pickle.load(f)
-    return model
+   # try:
+   #        print(path)
+   #        model=torch.load(path,weights_only=False)
+   #except:
+     with open(path, 'rb') as f:
+             model = pickle.load(f)
+     return model
 
 def compute_weights(y, num_classes=5):
     counts = torch.bincount(y.flatten(), minlength=num_classes)

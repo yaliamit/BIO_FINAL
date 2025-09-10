@@ -67,7 +67,7 @@ def predict(device, model_name, pred_folder_name, x_prefix='actin', y_prefix='ju
     model = load_model('./saved_models/' + model_name + '.pkl').to(device)
     model.eval()
     for target in ['train', 'valid', 'test']:
-        dirpath = datapath+ target
+        dirpath = datapath+target
         if pred_folder_name is not None and 'pred' in x_prefix:
             dirpath = datapath+'pred/'+pred_folder_name+'/'+target
         filenames = os.listdir(dirpath)
@@ -112,9 +112,12 @@ def predict(device, model_name, pred_folder_name, x_prefix='actin', y_prefix='ju
                     img = Image.fromarray(img)
 
                     thr=''
+                    newpath=datapath+'pred/'+model_name
                     if y_prefix=='leakiness':
                         thr=str(zero_thresh)
-                    newpath=datapath+'pred/'+model_name+'_thr_'+thr+'/'+target+'/'
+                        newpath=newpath+'_thr_'+thr+'/'+target+'/'
+                    else:
+                        newpath=newpath+'/'+target+'/'
                     if not os.path.exists(newpath):
                                     os.makedirs(newpath)
                     img.save(newpath+pref +'pred_'+  y_prefix + temp + filename[len(x_prefix):])

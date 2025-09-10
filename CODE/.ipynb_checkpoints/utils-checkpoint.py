@@ -12,26 +12,7 @@ from skimage import exposure
 import torch.nn.functional as F
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
-import xlsxwriter
 
-def write_to_excel(df,name):
-
-
-    # Create a Pandas Excel writer using XlsxWriter as the engine.
-    writer = pd.ExcelWriter(name, engine="xlsxwriter")
-    # Convert the dataframe to an XlsxWriter Excel object.
-    df.to_excel(writer, sheet_name="Sheet1")
-    # Get the xlsxwriter workbook and worksheet objects.
-    workbook = writer.book
-    worksheet = writer.sheets["Sheet1"]
-    
-    # Add some cell formats.
-    eformat = workbook.add_format({'num_format': '#.###'})
-    # Set the column width and format.
-    #worksheet.set_column(1, 1, 18, format1)
-    worksheet.set_column('A:L', None, eformat)
-    # Close the Pandas Excel writer and output the Excel file.
-    writer.close()
 
 def get_file_numbers(dir):
 
@@ -114,12 +95,17 @@ def stretch_image(img,low=2):
 
 def save_model(path, model):
     with open(path, 'wb') as file:  
-        pickle.dump(model, file)
-
+         pickle.dump(model, file)
+    #torch.save(model,path)
+    
 def load_model(path):
-    with open(path, 'rb') as f:
-        model = pickle.load(f)
-    return model
+   # try:
+   #        print(path)
+   #        model=torch.load(path,weights_only=False)
+   #except:
+     with open(path, 'rb') as f:
+             model = pickle.load(f)
+     return model
 
 def compute_weights(y, num_classes=5):
     counts = torch.bincount(y.flatten(), minlength=num_classes)

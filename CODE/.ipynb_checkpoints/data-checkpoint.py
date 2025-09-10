@@ -24,9 +24,9 @@ class WindowData(Dataset):
         # Predict outline from predicted junctions already computed in the pred_directory.
         if 'pred' in x_prefix:
             self.directory = os.path.join(data_path,splita)
+            print(pname,data_path)
             self.pred_directory = os.path.join(data_path,'pred',pname,splita)
-          
-            
+
         else:
             self.directory = os.path.join(data_path, splita)
         print(self.directory)

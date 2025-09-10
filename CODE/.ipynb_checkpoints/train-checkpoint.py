@@ -10,6 +10,8 @@ from model.unet import Unet, UnetRes
 # extra packages to help with output and time 
 import sys 
 import time 
+import psutil
+import numpy as np
 
 # from model.layers import TrippleConv
 import argparse
@@ -87,9 +89,9 @@ def trainer(device, trainset, validset, model, save_name, epochs, seed=0, weight
         
        
         for x, y in train_loader:
-  
+            #print('new batch',psutil.cpu_percent())
             x, y=trainset.transform_window(x,y)
-            
+            #print('finished transforming',psutil.cpu_percent())
             x = x.type(torch.float) 
             if continuous: 
                 y=  y.type(torch.float)
@@ -98,7 +100,7 @@ def trainer(device, trainset, validset, model, save_name, epochs, seed=0, weight
             tp=time.time()
 
             pred = model(x)
-           
+            #print('finished_model',psutil.cpu_percent())
             if continuous==1:
                 loss = criterion(pred, y)
                 if epoch < dice_steps:
@@ -112,6 +114,7 @@ def trainer(device, trainset, validset, model, save_name, epochs, seed=0, weight
                     weights /= weights.sum()
                     criterion.weight = weights
                 loss = criterion(pred, y.squeeze(dim=1))
+                #print('finished loss',psutil.cpu_percent())
                 acc= evaluate_t(y,pred)
                 train_acc+=acc
 
@@ -124,7 +127,7 @@ def trainer(device, trainset, validset, model, save_name, epochs, seed=0, weight
             
         scheduler.step()
 
-        if epoch % 10==0:
+        if epoch % 1==0:
             model.eval()
             acc, total, dice = 0, 0, 0
 
@@ -135,6 +138,7 @@ def trainer(device, trainset, validset, model, save_name, epochs, seed=0, weight
                         y = y.to(device, dtype=torch.float)
                     else:
                         y = y.to(device, dtype=torch.long)
+                    #print('new valid image',psutil.cpu_percent())
                     pred = model(x)
                     if continuous==1:  
                         valid_loss+=criterion(pred, y)
