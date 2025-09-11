@@ -6,13 +6,14 @@ import argparse
 from PIL import Image
 from utils import load_model
 import numpy as np
+import psutil
 import matplotlib.pyplot as plt
 
 def predict_file(device,target,model_name, file_num,x_prefix,y_prefix, zero_thresh=0, model_junction_name=None, im=None, pad_size=0,  name1=None, data_path='data/'):
     model = load_model('./saved_models/' + model_name + '.pkl').to(device)
     
     model.eval()
-   
+    #print('model eval',psutil.cpu_percent())
     # Read in the image to be processed.
     if im is None:
         dirpath = data_path + target
@@ -32,21 +33,22 @@ def predict_file(device,target,model_name, file_num,x_prefix,y_prefix, zero_thre
     xc=x.copy()
     x = torch.from_numpy(xc[None,None,:,:]).to(device, dtype=torch.float)
     x=torch.nn.functional.pad(x,(pad_size,pad_size,pad_size,pad_size),"constant", 0)
-   
+
     img_junction=None
     if model_junction_name is not None:
         model_junction = load_model('./saved_models/' + model_junction_name + '.pkl').to(device)
         img_junction=model_junction(x)
+        #print('model junction',psutil.cpu_percent())
         x=img_junction.clone()
         img_junction=img_junction.detach()
         if pad_size>0:
             img_junction = img_junction[:,:,pad_size:-pad_size,pad_size:-pad_size]
             img_junction =(img_junction.cpu().numpy().squeeze()*255).astype(np.uint8)
         
-        
+    
     img = model(x)
     img=img.detach()
-
+    #print('model',psutil.cpu_percent())
     if pad_size>0:
         img = img[:,:,pad_size:-pad_size,pad_size:-pad_size]
     if y_prefix == 'outline':
