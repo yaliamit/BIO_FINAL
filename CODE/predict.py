@@ -6,14 +6,13 @@ import argparse
 from PIL import Image
 from utils import load_model
 import numpy as np
-import psutil
 import matplotlib.pyplot as plt
 
 def predict_file(device,target,model_name, file_num,x_prefix,y_prefix, zero_thresh=0, model_junction_name=None, im=None, pad_size=0,  name1=None, data_path='data/'):
     model = load_model('./saved_models/' + model_name + '.pkl').to(device)
     
     model.eval()
-    #print('model eval',psutil.cpu_percent())
+
     # Read in the image to be processed.
     if im is None:
         dirpath = data_path + target
@@ -38,7 +37,6 @@ def predict_file(device,target,model_name, file_num,x_prefix,y_prefix, zero_thre
     if model_junction_name is not None:
         model_junction = load_model('./saved_models/' + model_junction_name + '.pkl').to(device)
         img_junction=model_junction(x)
-        #print('model junction',psutil.cpu_percent())
         x=img_junction.clone()
         img_junction=img_junction.detach()
         if pad_size>0:
@@ -48,7 +46,6 @@ def predict_file(device,target,model_name, file_num,x_prefix,y_prefix, zero_thre
     
     img = model(x)
     img=img.detach()
-    #print('model',psutil.cpu_percent())
     if pad_size>0:
         img = img[:,:,pad_size:-pad_size,pad_size:-pad_size]
     if y_prefix == 'outline':
@@ -62,10 +59,8 @@ def predict_file(device,target,model_name, file_num,x_prefix,y_prefix, zero_thre
     return(img,img_junction)
 
 def predict(device, model_name, pred_folder_name, x_prefix='actin', y_prefix='junction', pad_size=0, zero_thresh=0,datapath='data/'):
-#affine_coef=1,  trans_type='mix', kernel_size=5, rewrite=True, 
-            #reduced=True, n_layers = 4, n_window = 200, window_size = 200, margin = 0):
+
     temp =  ''
-    
     model = load_model('./saved_models/' + model_name + '.pkl').to(device)
     model.eval()
     for target in ['train', 'valid', 'test']:

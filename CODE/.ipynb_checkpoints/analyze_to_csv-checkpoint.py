@@ -15,6 +15,7 @@ def process_files(device,j,model_name_a,model_name_o,model_name_leak=None, targe
         ff=get_file_by_num(datapath+target,j)
         print(j,ff)
         celldata=[]
+
         ima=imj=imo=iml=None
         celltype='Unknown'
         if 'DF' in ff[0]:
@@ -44,7 +45,7 @@ def process_files(device,j,model_name_a,model_name_o,model_name_leak=None, targe
         else:
             imo_p,_=predict_file(device,None,model_name_o,None,
                                x_prefix='junction',
-                         y_prefix='outline', zero_thresh=0, im=imj_p,  name1=None)
+                         y_prefix='outline', zero_thresh=0, im=imj,  name1=None)
 
         if model_name_leak is not None:
                 if 'pred_junction' in model_name_leak:
@@ -66,7 +67,7 @@ def process_files(device,j,model_name_a,model_name_o,model_name_leak=None, targe
 def analyze_cell(j,o,ima, imj, iml, celltype, reduced=0):
 
         celldata=[]
-
+        print('reduced',reduced)
         if reduced:
             o[o==2]=1
             o[o==3]=2
@@ -85,7 +86,8 @@ def analyze_cell(j,o,ima, imj, iml, celltype, reduced=0):
         cells = cells & np.invert(junctions)
         labeled_cells = measure.label(cells)
         props = measure.regionprops(labeled_cells)
-        
+        PROPSL=[]
+        PROPSJ=[]
         k=0
         for prop in props:
             data = []
@@ -136,11 +138,11 @@ def analyze_cell(j,o,ima, imj, iml, celltype, reduced=0):
             else:
                 n3 = np.sum(pixel_values == 3)
                 tot = n1 + n2 + n3
-            #print(n1,n2,n3)
-            data.append(n1 / tot if tot else 0.000) # fraction_1
-            data.append(n2 / tot if tot else 0.000) # fraction_2
+
+            data.append(n1 / tot if tot else 0.000) # fraction_bdy
+            data.append(n2 / tot if tot else 0.000) # fraction_broken
             if not reduced:
-                data.append(n3 / tot if tot else 0.000) # fraction_3
+                data.append(n3 / tot if tot else 0.000) # fraction_thick
             else:
                 data.append(0.000)
             data.append(rl1)
@@ -151,8 +153,9 @@ def analyze_cell(j,o,ima, imj, iml, celltype, reduced=0):
             data.append(j)
             data.append(k)
             celldata.append(data)
-       
-        return(celldata)
+            PROPSJ+=[propsJ]
+            PROPSL+=[propsL]
+        return celldata #, PROPSJ, PROPSL
 
 
 
@@ -254,7 +257,7 @@ def match_points(cdt,cdp):
 
 def analyze_p(device,model_name_a, model_name_o,model_name_l=None, target='test/',reduced=0,gt=False,dfp=None,thr=.1,thr_p=.8,datapath='data/'):
     celldata = []
- 
+    print(model_name_a,model_name_o,model_name_l)
     ii=get_file_numbers(datapath+target)
     blank=np.zeros(15,dtype=np.int32)
     ii=np.sort(ii)
@@ -263,13 +266,13 @@ def analyze_p(device,model_name_a, model_name_o,model_name_l=None, target='test/
     for i,j in enumerate(ii):
         ima, imj, imo, iml, imj_p,imo_p, iml_p, celltype \
         =process_files(device,j,model_name_a,model_name_o,model_name_leak=model_name_l, gt=gt,datapath=datapath)
-        
+
+        # A leakiness image is present as well
         if iml is not None:
             iml=(iml>0).astype(np.float32)
             iml_p=(iml_p>0).astype(np.float32)
         
         if gt and imo is not None:
-            
             o=imo
         else:
             o=imo_p
@@ -280,6 +283,7 @@ def analyze_p(device,model_name_a, model_name_o,model_name_l=None, target='test/
             imleak=iml_p
  
         data=analyze_cell(j,o,ima, imj, imleak, celltype, reduced=reduced) 
+        
         print('data',len(data))
         celld=np.atleast_2d(np.array(data))
         
